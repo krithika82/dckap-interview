@@ -10,7 +10,7 @@ use App\testcase;
 class CategoryController extends Controller
 {
     /**
-     * Show the application dashboard.
+     * To Show Module.
      *
      * @return \Illuminate\Http\Response
      */
@@ -32,7 +32,7 @@ class CategoryController extends Controller
 
 
     /**
-     * Show the application dashboard.
+     * To Store module.
      *
      * @return \Illuminate\Http\Response
      */
@@ -51,9 +51,10 @@ class CategoryController extends Controller
 
     }
 
+/* To store Test case data.*/
+
     public function storetask(Request $request)
     {
-           // $id=$request->input('id');
             $moduleid=$request->input('module_id');
             $summary=$request->input('summary');
             $description=$request->input('description');
@@ -70,11 +71,9 @@ class CategoryController extends Controller
             $filetoStorage = $file->getClientOriginalName();
             $file = $request->file('file');
             $path = $file->storeAs('testcase', $filetoStorage);
+            $fileupload->save() ;
 
-         $fileupload->save() ;
-
-     
-return back()->with('success', 'New test case added successfully.');
+            return back()->with('success', 'New test case added successfully.');
 
     }
     public function deleteTestcase($id)
@@ -92,8 +91,11 @@ return back()->with('success', 'New test case added successfully.');
     if (file_exists($path)) {
         return response()->download($path);
     }
-}
+    }
          
+
+    /* To Delete Module.*/
+    
     public function destroy($id)
     {
         
@@ -107,11 +109,12 @@ return back()->with('success', 'New test case added successfully.');
        
     }
 
+
+     /* To view testcase based on selected Module.*/
+
     public function viewtestcase($id)
     {
-        
-     $categories = Category::where('parent_id', '=', 0)->get();
-
+        $categories = Category::where('parent_id', '=', 0)->get();
         $allCategories = Category::all();
         $testcasevalue = testcase::where('module_id',$id)->get();
 
@@ -120,10 +123,10 @@ return back()->with('success', 'New test case added successfully.');
 
       public function edittestcase(Request $request,$id)
 
-{
+    {
     
-    testcase::where('id',$id)->update($request->except('_token'));
+        testcase::where('id',$id)->update($request->except('_token'));
         return redirect()->back()->with('success','Info updated successfully');
 
-}
+    }
 }
